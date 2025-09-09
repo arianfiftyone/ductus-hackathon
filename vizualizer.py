@@ -1,6 +1,7 @@
 import pygame
 import numpy as np
 import wave
+import random
 
 
 class MusicVisualizer:
@@ -185,3 +186,48 @@ class MusicVisualizer:
                 pygame.draw.circle(screen, (255 - freq % 255, 128, freq % 255), (x, y + offset), 5)
 
 
+class Particle:
+    def __init__(self, x, y, size, color, velocity=None, fade_rate=0.1):
+        """
+        Initialize a particle at a given position with attributes.
+
+        :param x: Initial x-position of the particle.
+        :param y: Initial y-position of the particle.
+        :param size: Initial size (radius) of the particle.
+        :param color: Color of the particle (RGB tuple).
+        :param velocity: Velocity of the particle (list: [x_speed, y_speed]), random if None.
+        :param fade_rate: Rate at which the particle shrinks over time.
+        """
+        self.x = x
+        self.y = y
+        self.size = size
+        self.color = color
+        self.velocity = velocity or [np.random.uniform(-2, 2), np.random.uniform(-2, 2)]
+        self.fade_rate = fade_rate  # How much the particle shrinks each frame
+
+    def move(self):
+        """
+        Updates the particle's position and reduces its size over time.
+        """
+        self.x += self.velocity[0]
+        self.y += self.velocity[1]
+        # Gradually shrink the particle; prevent shrinking below zero
+        self.size = max(0, self.size - self.fade_rate)
+
+    def draw(self, screen):
+        """
+        Draws the particle on the given surface/screen.
+        """
+        if self.size > 0:  # Only draw if the particle is visible
+            pygame.draw.circle(screen, self.color, (int(self.x), int(self.y)), int(self.size))
+
+    @staticmethod
+    def create_particle_explosion(x, y, num_particles=30):
+        particles = []
+        for _ in range(num_particles):
+            size = random.randint(3, 8)  # Random size for variability
+            color = random.choice([(255, 50, 50), (255, 255, 50), (255, 128, 50)])  # Bright fire-like colors
+            velocity = [random.uniform(-3, 3), random.uniform(-3, 3)]  # Random movement
+            fade_rate = random.uniform(0.05, 0.2)  # Random fade speed
+            particles.append(Particle(x, y, size, color, velocity, fade_rate))
+        return particles

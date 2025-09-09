@@ -1,6 +1,6 @@
 import pygame
 import sys
-from vizualizer import MusicVisualizer
+from vizualizer import MusicVisualizer, Particle
 
 pygame.init()
 pygame.mixer.init()
@@ -60,6 +60,8 @@ holding_threshold = 1000  # milliseconds
 # Initialize the background visualizer
 visualizer = MusicVisualizer("testo.mp3")
 
+all_particles = []
+
 running = True
 while running:
     clock.tick(60)
@@ -76,6 +78,7 @@ while running:
                     score += 1
                     note_rect.y = 0
                     note_speed += 1
+                    all_particles += Particle.create_particle_explosion(100, 100, 100)
 
         elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
             mouse_held_start = None
@@ -109,6 +112,14 @@ while running:
     visualizer.draw_wave_grid(screen, WIDTH, HEIGHT, pygame.time.get_ticks())
 
     # pygame.draw.rect(screen, FRETBOARD_COLOR, fretboard_rect)
+
+    for particle in all_particles[:]:
+        particle.move()
+        particle.draw(screen)
+
+        # Remove the particle if it has shrunk completely
+        if particle.size <= 0:
+            all_particles.remove(particle)
 
     screen.blit(fretboard_image, fretboard_rect)
     pygame.draw.rect(screen, HITBOX_COLOR, hitbox_rect)
