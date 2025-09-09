@@ -1,8 +1,12 @@
 import pygame
 import sys
+from vizualizer import MusicVisualizer
 
 pygame.init()
 pygame.mixer.init()
+
+# Initialize the background visualizer
+visualizer = MusicVisualizer()
 
 WIDTH, HEIGHT = 1024, 768
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -70,6 +74,12 @@ while running:
 
     # Draw note block
     pygame.draw.rect(screen, NOTE_COLOR, note_rect)
+
+    # Get visual color from visualizer
+    visual_color = visualizer.get_visual_color()
+
+    # Fill screen with visual color
+    screen.fill(visual_color)
 
     # Draw button image
     screen.blit(button_image, button_rect)
