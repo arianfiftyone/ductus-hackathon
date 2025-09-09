@@ -25,12 +25,12 @@ button_rect = button_image.get_rect()
 button_rect.midbottom = (WIDTH // 2, HEIGHT - 50)
 
 # Define fretboard lane (vertical rectangle behind the note)
-fretboard_width = 80
+fretboard_width = 200
 fretboard_rect = pygame.Rect(
     WIDTH // 2 - fretboard_width // 2,
     0,
     fretboard_width,
-    HEIGHT
+    HEIGHT // 2
 )
 
 # Define falling note block properties
@@ -66,8 +66,11 @@ while running:
         print("Note hit the fret!")
         note_rect.y = 0  # Reset to top
 
-    # Draw everything
-    screen.fill(BLACK)
+    # Fill screen with visual color
+    # Get visual color from visualizer
+    visual_color = visualizer.get_visual_color()
+    screen.fill(visual_color)
+
 
     # Draw fretboard behind the note
     pygame.draw.rect(screen, FRETBOARD_COLOR, fretboard_rect)
@@ -75,11 +78,8 @@ while running:
     # Draw note block
     pygame.draw.rect(screen, NOTE_COLOR, note_rect)
 
-    # Get visual color from visualizer
-    visual_color = visualizer.get_visual_color()
+   
 
-    # Fill screen with visual color
-    screen.fill(visual_color)
 
     # Draw button image
     screen.blit(button_image, button_rect)
