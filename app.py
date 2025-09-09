@@ -15,7 +15,7 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 NOTE_COLOR = (255, 0, 0)
 FRETBOARD_COLOR = (104, 132, 124)
-HITBOX_COLOR = (0, 255, 0)
+HITBOX_COLOR = (0, 00, 0)
 
 # Load button image
 button_image = pygame.image.load("screenshot.png").convert_alpha()
@@ -23,12 +23,18 @@ button_rect = button_image.get_rect()
 button_rect.midbottom = (WIDTH // 2, HEIGHT - 50)
 
 # Fretboard
+# fretboard_width = 200
+# fretboard_rect = pygame.Rect(WIDTH // 2 - fretboard_width // 2, 0, fretboard_width, HEIGHT // 2 + 100)
 fretboard_width = 200
-fretboard_rect = pygame.Rect(WIDTH // 2 - fretboard_width // 2, 0, fretboard_width, HEIGHT // 2 + 100)
+fretboard_height = HEIGHT // 2 + 100
+fretboard_image = pygame.image.load("fretboard.png").convert_alpha()
+fretboard_image = pygame.transform.scale(fretboard_image, (fretboard_width + 50, fretboard_height))
+fretboard_rect = fretboard_image.get_rect()
+fretboard_rect.topleft = (WIDTH // 2 - fretboard_width // 2, 0)
 
 # Hitbox
 hitbox_height = 20
-hitbox_rect = pygame.Rect(WIDTH // 2 - fretboard_width // 2, button_rect.top - hitbox_height, fretboard_width, hitbox_height)
+hitbox_rect = pygame.Rect((WIDTH // 2 - fretboard_width // 2) + 30, button_rect.top - hitbox_height, 140, hitbox_height)
 
 # Note properties
 note_width, note_height = 60, 30
@@ -96,13 +102,15 @@ while running:
     screen.fill(visualizer.get_visual_color())
 
     # Draw waveform
-    #visualizer.draw_ripples(screen, WIDTH, HEIGHT)
-    #visualizer.draw_spiral(screen, WIDTH, HEIGHT, pygame.time.get_ticks())
+    visualizer.draw_ripples(screen, WIDTH, HEIGHT)
+    visualizer.draw_spiral(screen, WIDTH, HEIGHT, pygame.time.get_ticks())
     visualizer.draw_waveform(screen, WIDTH, HEIGHT)
-    #visualizer.draw_radial_bars(screen, WIDTH, HEIGHT)
+    visualizer.draw_radial_bars(screen, WIDTH, HEIGHT)
     visualizer.draw_wave_grid(screen, WIDTH, HEIGHT, pygame.time.get_ticks())
 
-    pygame.draw.rect(screen, FRETBOARD_COLOR, fretboard_rect)
+    # pygame.draw.rect(screen, FRETBOARD_COLOR, fretboard_rect)
+
+    screen.blit(fretboard_image, fretboard_rect)
     pygame.draw.rect(screen, HITBOX_COLOR, hitbox_rect)
     pygame.draw.rect(screen, NOTE_COLOR, note_rect)
     screen.blit(button_image, button_rect)
