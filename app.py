@@ -78,7 +78,8 @@ while running:
                     score += 1
                     note_rect.y = 0
                     note_speed += 1
-                    all_particles += Particle.create_particle_explosion(100, 100, 100)
+                    all_particles += Particle.create_particle_explosion(85, 50, 100)
+                    all_particles += Particle.create_particle_explosion(WIDTH // 2, 666, 100)
 
         elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
             mouse_held_start = None
