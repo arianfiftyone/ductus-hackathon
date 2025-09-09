@@ -10,7 +10,7 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("ONE BUTTON CHALLENGE!!!!!!!!!!!!!")
 clock = pygame.time.Clock()
 
-# Colors
+# CONSTANTS
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 NOTE_COLOR = (255, 0, 0)
@@ -22,9 +22,11 @@ button_image = pygame.image.load("screenshot.png").convert_alpha()
 button_rect = button_image.get_rect()
 button_rect.midbottom = (WIDTH // 2, HEIGHT - 50)
 
-# Fretboard and hitbox
+# Fretboard
 fretboard_width = 200
 fretboard_rect = pygame.Rect(WIDTH // 2 - fretboard_width // 2, 0, fretboard_width, HEIGHT // 2 + 100)
+
+# Hitbox
 hitbox_height = 20
 hitbox_rect = pygame.Rect(WIDTH // 2 - fretboard_width // 2, button_rect.top - hitbox_height, fretboard_width, hitbox_height)
 
@@ -33,21 +35,19 @@ note_width, note_height = 60, 30
 note_speed = 5
 note_rect = pygame.Rect(WIDTH // 2 - note_width // 2, 0, note_width, note_height)
 
-# Font and score
 font = pygame.font.SysFont(None, 48)
 score = 0
 
-# Song setup
 songs = ["testo.mp3", "testo2.mp3"]
 current_song_index = 0
 
+# Init song
 try:
     pygame.mixer.music.load(songs[current_song_index])
     pygame.mixer.music.play()
 except Exception as e:
     print(f"Failed to play song: {e}")
 
-# Hold detection
 mouse_held_start = None
 holding_threshold = 1000  # milliseconds
 
