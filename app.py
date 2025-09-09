@@ -5,8 +5,6 @@ from vizualizer import MusicVisualizer
 pygame.init()
 pygame.mixer.init()
 
-visualizer = MusicVisualizer()
-
 WIDTH, HEIGHT = 1024, 768
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("ONE BUTTON CHALLENGE!!!!!!!!!!!!!")
@@ -53,6 +51,9 @@ except Exception as e:
 mouse_held_start = None
 holding_threshold = 1000  # milliseconds
 
+# Initialize the background visualizer
+visualizer = MusicVisualizer("testo.mp3")
+
 running = True
 while running:
     clock.tick(60)
@@ -91,11 +92,17 @@ while running:
     if note_rect.y > HEIGHT:
         note_rect.y = 0
 
+    # Draw background
     screen.fill(visualizer.get_visual_color())
+
+    # Draw waveform
+    visualizer.draw_waveform(screen, WIDTH, HEIGHT)
+
     pygame.draw.rect(screen, FRETBOARD_COLOR, fretboard_rect)
     pygame.draw.rect(screen, HITBOX_COLOR, hitbox_rect)
     pygame.draw.rect(screen, NOTE_COLOR, note_rect)
     screen.blit(button_image, button_rect)
+
 
     score_text = font.render(f"Score: {score}", True, WHITE)
     screen.blit(score_text, (40, 40))
