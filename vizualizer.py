@@ -134,3 +134,54 @@ class MusicVisualizer:
             bar_height = freq
             bar_rect = pygame.Rect(x, height // 2 - bar_height // 2, bar_width - 2, bar_height)
             pygame.draw.rect(screen, self.color, bar_rect)
+
+    def draw_ripples(self, screen, width, height):
+        frequencies = self.get_frequency_bars()
+        center_x, center_y = width // 2, height // 2
+
+        for i, freq in enumerate(frequencies):
+            radius = int(freq)  # Circle radius based on frequency magnitude
+            color = (i * 4 % 255, 128, 255 - i * 4 % 255)  # Slightly dynamic colors
+            pygame.draw.circle(screen, color, (center_x, center_y), radius, 2)  # Draw circles
+
+    def draw_spiral(self, screen, width, height, angle_offset):
+        frequencies = self.get_frequency_bars()
+        center_x, center_y = width // 2, height // 2
+
+        for i, freq in enumerate(frequencies):
+            angle = i * (360 / len(frequencies)) + angle_offset
+            radius = int(freq) * 3
+            x = int(center_x + radius * np.cos(np.radians(angle)))
+            y = int(center_y + radius * np.sin(np.radians(angle)))
+            color = (255 - i * 4 % 255, i * 8 % 255, 128)  # Color dynamic
+            pygame.draw.circle(screen, color, (x, y), 4)  # Small circle at each point
+
+    def draw_radial_bars(self, screen, width, height):
+        frequencies = self.get_frequency_bars()
+        center_x, center_y = width // 2, height // 2
+        num_bars = len(frequencies)
+        angle_step = 360 / num_bars
+
+        for i, freq in enumerate(frequencies):
+            length = int(freq) * 4
+            angle = i * angle_step
+            end_x = int(center_x + length * np.cos(np.radians(angle)))
+            end_y = int(center_y + length * np.sin(np.radians(angle)))
+
+            color = (255, i * 4 % 255, i * 8 % 255)  # Dynamic color
+            pygame.draw.line(screen, color, (center_x, center_y), (end_x, end_y), 2)  # Thin bars
+
+    def draw_wave_grid(self, screen, width, height, frame_count):
+        frequencies = self.get_frequency_bars()
+        rows, cols = 10, 10  # Adjust rows and columns for resolution
+        grid_width, grid_height = width // cols, height // rows
+
+        for row in range(rows):
+            for col in range(cols):
+                x = col * grid_width + grid_width // 2
+                y = row * grid_height + grid_height // 2
+                freq = frequencies[(row * cols + col) % len(frequencies)]
+                offset = int(50 * np.sin(frame_count / 10.0 + freq / 10.0))  # Oscillation
+                pygame.draw.circle(screen, (255 - freq % 255, 128, freq % 255), (x, y + offset), 5)
+
+

@@ -96,7 +96,11 @@ while running:
     screen.fill(visualizer.get_visual_color())
 
     # Draw waveform
+    #visualizer.draw_ripples(screen, WIDTH, HEIGHT)
+    #visualizer.draw_spiral(screen, WIDTH, HEIGHT, pygame.time.get_ticks())
     visualizer.draw_waveform(screen, WIDTH, HEIGHT)
+    #visualizer.draw_radial_bars(screen, WIDTH, HEIGHT)
+    visualizer.draw_wave_grid(screen, WIDTH, HEIGHT, pygame.time.get_ticks())
 
     pygame.draw.rect(screen, FRETBOARD_COLOR, fretboard_rect)
     pygame.draw.rect(screen, HITBOX_COLOR, hitbox_rect)
